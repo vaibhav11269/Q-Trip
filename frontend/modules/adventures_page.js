@@ -5,13 +5,34 @@ import config from "../conf/index.js";
 function getCityFromURL(search) {
   // TODO: MODULE_ADVENTURES
   // 1. Extract the city id from the URL's Query Param and return it
+  let ind=search.indexOf("=");
+  return search.slice(ind+1);
 
 }
-
+// let btn=document.getElementById("newAdventure");
+// btn.addEventListener('click',()=>{
+//   const post =fetch("adventures/new",{
+//     method: "POST",
+//     body:JSON.stringify({
+//       city: "London"
+//   }),
+//   headers: {
+//     "Content-type": "application/json; charset=UTF-8"
+// }
+// });
+// });
 //Implementation of fetch call with a paramterized input based on city
 async function fetchAdventures(city) {
   // TODO: MODULE_ADVENTURES
   // 1. Fetch adventures using the Backend API and return the data
+  let url = config.backendEndpoint+"/adventures?city="+city;
+  try{
+  let response = await fetch(url);
+  let data=await response.json();
+  return data;
+  }catch(err){
+    return null;
+  }
 
 }
 
@@ -19,6 +40,37 @@ async function fetchAdventures(city) {
 function addAdventureToDOM(adventures) {
   // TODO: MODULE_ADVENTURES
   // 1. Populate the Adventure Cards and insert those details into the DOM
+  adventures.forEach(adventure => {
+    const {id, name, costPerHead, currency, image, duration, category} = adventure;
+    let wrapper = document.createElement("div");
+    wrapper.className = "col-12 col-sm-6 col-lg-3 mb-4";
+    let cardLink = document.createElement("a");
+    cardLink.id=`${id}`;
+    cardLink.href= `detail/?adventure=${id}`;
+    let cardBody = document.createElement("div");
+    cardBody.className = "activity-card";
+    let cardImg = document.createElement("img");
+    cardImg.src = image;
+    cardBody.append(cardImg);
+    let categoryDiv = document.createElement("div");
+    categoryDiv.className = "category-banner";
+    categoryDiv.innerHTML = `<p>${category}</p>`;
+    cardBody.append(categoryDiv);
+    let infoDiv=document.createElement("div");
+    infoDiv.setAttribute("class","w-100 mt-3");
+    let div1=document.createElement("div");
+    div1.setAttribute("class","text-center d-md-flex justify-content-between p-md-3");
+    div1.innerHTML=`<h5>${name}</h5>`+`<p>₹${costPerHead}</p>`
+    let div2=document.createElement("div");
+    div2.setAttribute("class","text-center d-md-flex justify-content-between p-md-3");
+    div2.innerHTML=`<h5>Duration</h5>`+ `<p>${duration} Hours</p>`;
+    infoDiv.append(div1);
+    infoDiv.append(div2);
+    cardBody.append(infoDiv);
+    cardLink.append(cardBody);
+    wrapper.append(cardLink);
+    document.getElementById("data").append(wrapper);
+  });
 
 }
 
