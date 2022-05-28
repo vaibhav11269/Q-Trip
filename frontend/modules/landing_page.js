@@ -3,10 +3,10 @@ import config from "../conf/index.js";
 async function init() {
   //Fetches list of all cities along with their images and description
   let cities = await fetchCities().catch(err=>console.log("Fetch Unsuccesful"));
-  console.log("From init()");
-  console.log(config.backendEndpoint);
-  console.log(cities);
-  //Updates the DOM with the cities
+  // console.log("From init()");
+  // console.log(config.backendEndpoint);
+  // console.log(cities);
+  // //Updates the DOM with the cities
   cities.forEach((key) => {
     if(key.id==="singapore"){
       key.image="https://images.pexels.com/photos/3573382/pexels-photo-3573382.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
